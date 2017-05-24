@@ -98,16 +98,18 @@ class PlanarDefUI(object):
 
 #_______________________________________________________________________________
 
-    # Start animating through the current camera
+    # Start/stop animating through the current camera
     def bowl(self):
+        if (cmds.play(query=True, state=True)):
+            cmds.play(state=False)
+        else:
+            strength = cmds.floatSliderGrp('strength', query=True, value=True)
+            cmds.setAttr("bulletRigidBodyShape8.initialVelocityX", strength)
 
-        strength = cmds.floatSliderGrp('strength', query=True, value=True)
-        cmds.setAttr("bulletRigidBodyShape8.initialVelocityX", strength)
+            angle = cmds.floatSliderGrp('angle', query=True, value=True)
+            cmds.setAttr("bulletRigidBodyShape8.initialVelocityZ", angle)
 
-        angle = cmds.floatSliderGrp('angle', query=True, value=True)
-        cmds.setAttr("bulletRigidBodyShape8.initialVelocityZ", angle)
-
-        cmds.play(forward=True)
+            cmds.play(forward=True)
 
     def setStrength(self, strength):
         cmds.setAttr("bulletRigidBodyShape8.initialVelocityX", strength)
@@ -122,11 +124,11 @@ class PlanarDefUI(object):
     def mainCamera(self):
         cmds.lookThru("camera1")
 
-    def bowlCam(self):
-        cmds.lookThru("camera2")
+    def bowlShot(self):
+        cmds.lookThru("persp1")
 
-    def panCam(self):
-        cmds.lookThru("camera3")
+    def panShot(self):
+        cmds.lookThru("camera2")
 
     def purpleAlley(self):
         cmds.setAttr('alleyColor.color', 0.027, 0, 0.192)
